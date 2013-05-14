@@ -1,4 +1,12 @@
+// =============================================================================
+// 
+// Peregrine "Bird" firmware for Peregrine S-UAV lead follow pair
+//
+//==============================================================================
+
+
 // libraries
+//-------------
 #include <Wire.h> // for 2-wire I2C serial comm
 #include <FastSerial.h> // for high baud serial comm w/ GPS
 #include <AP_GPS.h> // for 3D Robotics MediaTek GPS drivers
@@ -8,9 +16,10 @@
 #include <Servo.h> // for camera pointing servo control
 #include <LSM303.h> // Pololu imu-9, compass module.
 #include <L3G.h> //  Polulu imu-9, gyro accelerometer module
-
+//--------------
 
 // variables
+//--------------
 Adafruit_BMP085 bmp; // barometric pressure mapped to 'bmp'
 LSM303 compass; // magentometer / accelerometer mapping
 L3G gyro; // gyroscope mapping
@@ -26,55 +35,32 @@ double LON; //   Longitude double precision floating point var
 double GALTD; // GPS determined altitude double precision floating point var
 Servo myservo;  // create servo object to control a servo 
 int spos = 0;    // variable to store the servo position 
- 
+//-------------
+
+
+
+//====================
+//  MAIN PROGRAM
+//====================
+
 // initialize
-   setup();
+void setup(){
+  initialize();
+}
    
 // main program loop
-void loop() {
-   daq()
-   
-   myservo.write(0);              // tell servo to go to position 0
-
-   //Serial.print("altitude = ");
-   Serial.print(BALTD);
-   //Serial.print(" meters");
-    
-
-  
-
-  //Serial.print(" A ");
-  Serial.print("aX: ");
-  Serial2.print((int)compass.a.x);
-  Serial2.print(",");
-  Serial.print(" aY: ");
-  Serial2.print((int)compass.a.y);
-  Serial2.print(",");
-  Serial.print(" aZ: ");
-  Serial2.println((int)compass.a.z);
-
-  //Serial.print(" M ");  
-  //Serial.print("X: ");
-  //Serial.print((int)compass.m.x);
-  //Serial.print(" Y: ");
-  //Serial.print((int)compass.m.y);
-  //Serial.print(" Z: ");
-  //Serial.print((int)compass.m.z);
-
-  Serial.print(" Heading:");
-  Serial.print(heading);
-  
-
-  //Serial.print(" G ");
-  Serial.print("gX: ");
-  Serial.print((int)gyro.g.x);
-  Serial.print(" gY: ");
-  Serial.print((int)gyro.g.y);
-  Serial.print(" gZ: ");
-  Serial.println((int)gyro.g.z);
-  //myservo.write(180);              // tell servo to go to position 180
-  //Serial.print(millis());
+void loop() 
+{
+   daq();
+   comm();
+   modes();
+   controls(); 
+   output(); 
 }
+
+//======================================================
+// Data Acquisition (DAQ) function
+//------------------------------------------------------
 
 void daq() {
      BALTD = bmp.readAltitude(102500); // read barometric pressure corrected for sea level
@@ -104,8 +90,51 @@ void daq() {
     }
 
 }
+
+//============================================
+// Output Function
+//--------------------------------------------
+
+void output() { 
+   myservo.write(0);              // tell servo to go to position 0
+   //Serial.print("altitude = ");
+   Serial.print(BALTD);
+   //Serial.print(" meters");
+  //Serial.print(" A ");
+  Serial.print("aX: ");
+  Serial2.print((int)compass.a.x);
+  Serial2.print(",");
+  Serial.print(" aY: ");
+  Serial2.print((int)compass.a.y);
+  Serial2.print(",");
+  Serial.print(" aZ: ");
+  Serial2.println((int)compass.a.z);
+  //Serial.print(" M ");  
+  //Serial.print("X: ");
+  //Serial.print((int)compass.m.x);
+  //Serial.print(" Y: ");
+  //Serial.print((int)compass.m.y);
+  //Serial.print(" Z: ");
+  //Serial.print((int)compass.m.z);
+  Serial.print(" Heading:");
+  Serial.print(heading);
+  //Serial.print(" G ");
+  Serial.print("gX: ");
+  Serial.print((int)gyro.g.x);
+  Serial.print(" gY: ");
+  Serial.print((int)gyro.g.y);
+  Serial.print(" gZ: ");
+  Serial.println((int)gyro.g.z);
+  //myservo.write(180);              // tell servo to go to position 180
+  //Serial.print(millis());
+}
+
+//==============================================================
 // setup function
-void setup() {
+//--------------------------------------------------------------
+
+void initialize() 
+{
   Wire.begin();        // start i2c communication
   myservo.attach(9);   // attaches the servo on pin 9 to the servo object 
   compass.init();      // initialize compass
@@ -123,3 +152,38 @@ void setup() {
   gps.init();	 // GPS Initialization
   delay(1000);
 }
+
+
+//============================================
+// Communication Function
+//--------------------------------------------
+
+void comm(){
+  
+}
+
+//============================================
+// Mode Selection Function
+//--------------------------------------------
+
+void modes(){
+  
+}
+
+//============================================
+// Control Outpu Calculation Function
+//--------------------------------------------
+
+void controls(){
+  
+}
+
+//============================================
+// Output Function
+//--------------------------------------------
+
+void output(){
+  
+}
+
+
